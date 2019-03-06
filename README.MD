@@ -101,7 +101,7 @@ FFmpeg, and Python3 are required. Make sure to install these packages
 sudo apt install python3 ffmpeg
 ```
 
-##### Using MJPG of H.264
+##### Using MJPG or H.264
 Only MJPG is currently supported.
 
 ##### Start at boot
