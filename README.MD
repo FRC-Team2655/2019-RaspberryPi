@@ -8,6 +8,12 @@ Raspberry Pi 2B or newer setup as a co-processor for streaming USB webcam video 
 
 ## Raspberry Pi Software Setup
 
+### Accessing the Pi's filesystem
+- SSH access using a text editor such as nano
+- VNC access
+- Connect to monitor, keyboard, mouse
+- Connect SD Card to linux PC
+
 ### DD Image
 To come
 
@@ -70,6 +76,10 @@ static ip_address=10.26.55.10
 static routers=10.26.55.1 
 static domain_name_servers=10.26.55.1 
 ```
+
+#### Disabling static address during development
+
+Uncomment the above lines.
 
 ### Setting Up Required Software
 
