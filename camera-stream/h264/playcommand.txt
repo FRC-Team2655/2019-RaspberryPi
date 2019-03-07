@@ -1,0 +1,1 @@
+ffplay http://camerapi:5554/camera0.flv

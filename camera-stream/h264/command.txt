@@ -1,1 +1,1 @@
-ffmpeg -r 30 -s 640x480 -input_format mjpeg -f v4l2 -i /dev/video0 -an -preset ultrafast -tune zerolatency http://localhost:5805/camera0.ffm
+ffmpeg -f v4l2 -input_format mjpeg -r 24 -s 640x480 -i /dev/video0 -c:v libx264 -an -crf 30 -preset ultrafast -tune zerolatency http://localhost:5805/camera0.ffm
