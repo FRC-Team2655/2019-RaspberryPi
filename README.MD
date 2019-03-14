@@ -79,7 +79,7 @@ static domain_name_servers=10.26.55.1
 
 #### Disabling static address during development
 
-Uncomment the above lines.
+Comment out the above lines (add a hash '#' in front of each).
 
 ### Setting Up Required Software
 
@@ -111,8 +111,35 @@ FFmpeg, and Python3 are required. Make sure to install these packages
 sudo apt install python3 ffmpeg
 ```
 
-##### Using MJPG or H.264
-Only MJPG is currently supported.
+##### Stream formats
+***Only MJPG is currently well supported and tested. Use others with caution!***
+
+###### MJPG (Default)
+- Higher bandwidth format
+- Lower resultion and framerate to reduce bandwidth usage
+- Each stream (2 total) 1024kb/sec at 480x360@15fps
+- Easiest to stream/decode (browser, VLC, other)
+- Well tested
+
+###### H.264
+- Currently High Latency (likely player side)
+- Lower bandwidth encoding
+- Higher resolution and framerate
+- About 512kb/sec 640x480@30fps per stream
+- More difficult to stream/decode (ffplay, mplayer, VLC)
+- Using FLV or MPEG-TS format
+- Poorly tested and not suited for use on robot
+
+###### Experimental H.264
+- Only tested local on PC (not on Pi)
+- Lower bandwidth encoding
+- Higher resolution and framerate
+- About 512kb/sec 640x480@30fps (extrapolated)
+    - Only tested 640x480@15fps due to test setup limitations
+- Low latency
+    - Once again, only tested locally. Not yet tested over robot network.
+- Using MV4 format
+- Poorly tested and not suited for use on robot
 
 ##### Start at boot
 
@@ -128,4 +155,4 @@ Select an editor if prompted and add the following to the end of the file
 @reboot sleep 20 && /home/pi/team2655/camera-stream/start-camerastream.sh &
 ```
 
-This will start the camera stream 20 seconds after the pi boots.
+This will start the camera stream 20 seconds after the pi boots. The start script will use the default format listed above. To change the format, use one of the format specific start scripts in the camera-stream subdirectories.
