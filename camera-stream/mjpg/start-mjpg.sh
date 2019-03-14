@@ -14,12 +14,12 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
 done
 DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
 
-HTTPPOIRT=5805
+HTTPPORT=5805
 
 fuser -k $HTTPPORT/tcp
 
 ffserver -f $DIR/ffserver.conf &
-ffmpeg -f v4l2 -s 480x360 -r 15 -input_format mjpeg -i /dev/video0 -crf 30 -an http://localhost:5805/camera0.ffm &
-ffmpeg -f v4l2 -s 480x360 -r 15 -input_format mjpeg -i /dev/video1 -crf 30 -an http://localhost:5805/camera1.ffm &
+ffmpeg -f v4l2 -s 480x360 -r 15 -input_format mjpeg -i /dev/video0 -crf 30 -an http://localhost:$HTTPPORT/camera0.ffm &
+ffmpeg -f v4l2 -s 480x360 -r 15 -input_format mjpeg -i /dev/video1 -crf 30 -an http://localhost:$HTTPPORT/camera1.ffm &
 
 wait
