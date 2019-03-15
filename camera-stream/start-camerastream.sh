@@ -8,4 +8,4 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a syml$
 done
 DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
 
-$DIR/mjpg/start-mjpg.sh
+$DIR/experimental-h264/startwithserver.sh
