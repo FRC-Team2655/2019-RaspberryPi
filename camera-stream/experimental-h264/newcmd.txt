@@ -1,0 +1,1 @@
+ffplay -fflags nobuffer -probesize 32 -flags low_delay -framedrop http://localhost:5805/camera0.vid
