@@ -1,0 +1,59 @@
+Using FRC Image
+Image SD card
+Open web config frcvision.local
+Put in writable mode (button at top of webconfig)
+Change team number (Vision settings)
+
+Login via ssh
+ssh -l pi frcvision.local
+
+change passwd
+sudo passwd pi
+
+Remove video0 camer (via web config)
+Add correct camera (ONLY VISION CAMERA) or use json
+"cameras": [
+{
+    "fps": 30,
+    "height": 360,
+    "name": "VisionCamera",
+    "path": "/dev/video1",
+    "pixel format": "mjpeg",
+    "stream": {
+        "properties": []
+    },
+    "width": 640
+}
+]
+
+install ffmpeg and git
+sudo apt install ffmpeg git
+
+Clone repo:
+git clone https://github.com/FRC-Team2655/2019-RaspberryPi.git ~/team2655
+
+Disable control over /dev/video0
+sudo nano /boot/frc.json
+Remove the camera in cameras tag
+
+Start the camera server and vision on boot:
+
+Change the apllication to custom (Aplication tab on web convig)
+Edit /home/pi/runCamera to be as follows:
+
+```
+#!/bin/bash
+# Make sure to kill background processes on exit
+trap "kill 0" EXIT
+
+echo "Waiting 5 seconds..."
+sleep 5
+
+# Start camera stream server
+/home/pi/team2655/camera-stream/start-camerastream.sh &
+
+# Start vision processing
+python3 /home/pi/team2655/vision/ChickenVision.py &
+
+wait
+```

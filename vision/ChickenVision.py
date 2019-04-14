@@ -179,6 +179,50 @@ upper_green = np.array([110, 255, 255])
 lower_orange = np.array([0,193,92])
 upper_orange = np.array([23, 255, 255])
 
+def filter_contours(input_contours, min_area = 50.0, min_perimeter = 100.0, min_width = 0, max_width = 75,
+                        min_height = 50.0, max_height = 150.0, solidity = [0, 100], max_vertex_count = 100.0, min_vertex_count = 0,
+                        min_ratio = 0, max_ratio = 1000.0):
+        """Filters out contours that do not meet certain criteria.
+        Args:
+            input_contours: Contours as a list of numpy.ndarray.
+            min_area: The minimum area of a contour that will be kept.
+            min_perimeter: The minimum perimeter of a contour that will be kept.
+            min_width: Minimum width of a contour.
+            max_width: MaxWidth maximum width.
+            min_height: Minimum height.
+            max_height: Maximimum height.
+            solidity: The minimum and maximum solidity of a contour.
+            min_vertex_count: Minimum vertex Count of the contours.
+            max_vertex_count: Maximum vertex Count.
+            min_ratio: Minimum ratio of width to height.
+            max_ratio: Maximum ratio of width to height.
+        Returns:
+            Contours as a list of numpy.ndarray.
+        """
+        output = []
+        for contour in input_contours:
+            x,y,w,h = cv2.boundingRect(contour)
+            if (w < min_width or w > max_width):
+                continue
+            if (h < min_height or h > max_height):
+                continue
+            area = cv2.contourArea(contour)
+            if (area < min_area):
+                continue
+            if (cv2.arcLength(contour, True) < min_perimeter):
+                continue
+            hull = cv2.convexHull(contour)
+            solid = 100 * area / cv2.contourArea(hull)
+            if (solid < solidity[0] or solid > solidity[1]):
+                continue
+            if (len(contour) < min_vertex_count or len(contour) > max_vertex_count):
+                continue
+            ratio = (float)(w) / h
+            if (ratio < min_ratio or ratio > max_ratio):
+                continue
+            output.append(contour)
+        return output
+
 #Flip image if camera mounted upside down
 def flipImage(frame):
     return cv2.flip( frame, -1 )
@@ -210,7 +254,11 @@ def threshold_video(lower_color, upper_color, blur):
 def findTargets(frame, mask):
     # Finds contours
     _, contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_TC89_KCOS)
-    # Take each frame
+    
+	# Custom contour filtering
+    contours = filter_contours(contours)
+	
+	# Take each frame
     # Gets the shape of video
     screenHeight, screenWidth, _ = frame.shape
     # Gets center of height and width
@@ -775,6 +823,7 @@ if __name__ == "__main__":
     fps.stop()
     print("[INFO] elasped time: {:.2f}".format(fps.elapsed()))
     print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
+
 
 
 

@@ -156,3 +156,32 @@ Select an editor if prompted and add the following to the end of the file
 ```
 
 This will start the camera stream 20 seconds after the pi boots. The start script will use the default format listed above. To change the format, use one of the format specific start scripts in the camera-stream subdirectories.
+
+
+#### Vision Processing
+- Based on ChickenVision
+- Slightly modified script
+- python3 /home/pi/vision/ChickenVision.py
+
+##### Setup to run chicken vision
+```
+curl -sSf https://raw.githubusercontent.com/jabelone/OpenCV-for-Pi/master/lazy_install.sh | sh
+```
+
+Edit `/boot/frc.json` to be as follows. Change the camera device number as needed
+```
+{
+    "team": 2655,
+    "cameras": [
+	{
+	    "name": "rPi Camera 0",
+	    "path": "/dev/video2",
+	    "pixel format": "mjpeg",
+	    "width": 640,
+	    "height": 360,
+	    "fps": 30
+	}
+    ]
+}
+
+```
