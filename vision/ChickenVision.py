@@ -179,9 +179,9 @@ upper_green = np.array([110, 255, 255])
 lower_orange = np.array([0,193,92])
 upper_orange = np.array([23, 255, 255])
 
-def filter_contours(input_contours, min_area = 50.0, min_perimeter = 100.0, min_width = 0, max_width = 75,
-                        min_height = 50.0, max_height = 150.0, solidity = [0, 100], max_vertex_count = 100.0, min_vertex_count = 0,
-                        min_ratio = 0, max_ratio = 1000.0):
+def filter_contours(input_contours, min_area = 200.0, min_perimeter = 0, min_width = 0, max_width = 1000,
+                        min_height = 0, max_height = 1000, solidity = [0, 100], max_vertex_count = 1000000.0, min_vertex_count = 0,
+                        min_ratio = 0.2, max_ratio = 2):
         """Filters out contours that do not meet certain criteria.
         Args:
             input_contours: Contours as a list of numpy.ndarray.
@@ -255,10 +255,10 @@ def findTargets(frame, mask):
     # Finds contours
     _, contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_TC89_KCOS)
     
-	# Custom contour filtering
-    contours = filter_contours(contours)
-	
-	# Take each frame
+    # Custom contour filtering
+    #contours = filter_contours(contours)
+    
+    # Take each frame
     # Gets the shape of video
     screenHeight, screenWidth, _ = frame.shape
     # Gets center of height and width
@@ -778,7 +778,6 @@ if __name__ == "__main__":
     #TOTAL_FRAMES = 200;
     # loop forever
     while True:
-
 
         # Tell the CvSink to grab a frame from the camera and put it
         # in the source image.  If there is an error notify the output.
