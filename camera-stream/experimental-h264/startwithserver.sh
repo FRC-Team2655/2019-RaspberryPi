@@ -20,7 +20,7 @@ fuser -k $HTTPPORT/tcp
 
 ffserver -f $DIR/ffserver.conf &
 ffmpeg -input_format mjpeg -r 15 -s 640x480 -f v4l2 -i /dev/video0 http://localhost:$HTTPPORT/camera0.ffm &
-ffmpeg -input_format mjpeg -r 15 -s 640x480 -f v4l2 -i /dev/video1 http://localhost:$HTTPPORT/camera1.ffm &
+ffmpeg -input_format mjpeg -r 15 -s 640x480 -f v4l2 -i /dev/video2 http://localhost:$HTTPPORT/camera1.ffm &
 
 wait
 

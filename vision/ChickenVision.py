@@ -179,9 +179,9 @@ upper_green = np.array([110, 255, 255])
 lower_orange = np.array([0,193,92])
 upper_orange = np.array([23, 255, 255])
 
-def filter_contours(input_contours, min_area = 200.0, min_perimeter = 0, min_width = 0, max_width = 1000,
+def filter_contours(input_contours, min_area = 330.0, min_perimeter = 130, min_width = 0, max_width = 1000,
                         min_height = 0, max_height = 1000, solidity = [0, 100], max_vertex_count = 1000000.0, min_vertex_count = 0,
-                        min_ratio = 0.2, max_ratio = 2):
+                        min_ratio = 0.2, max_ratio = 0.9):
         """Filters out contours that do not meet certain criteria.
         Args:
             input_contours: Contours as a list of numpy.ndarray.
@@ -256,7 +256,7 @@ def findTargets(frame, mask):
     _, contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_TC89_KCOS)
     
     # Custom contour filtering
-    #contours = filter_contours(contours)
+    contours = filter_contours(contours)
     
     # Take each frame
     # Gets the shape of video
@@ -510,7 +510,7 @@ def findTape(contours, image, centerX, centerY):
                 #Note: if using rotated rect (min area rectangle)
                 #      negative tilt means rotated to left
                 # If left contour rotation is tilted to the left then skip iteration
-                if (tilt1 < 0):
+                if (tilt1 > 0):
                     if (cx1 < cx2):
                         continue
                 # If left contour rotation is tilted to the left then skip iteration
@@ -551,6 +551,7 @@ def findTape(contours, image, centerX, centerY):
 
 # Checks if tape contours are worthy based off of contour area and (not currently) hull area
 def checkContours(cntSize, hullSize):
+    print("Hull Size: " + str(hullSize))
     return cntSize > (image_width / 6)
 
 # Checks if ball contours are worthy based off of contour area and (not currently) hull area
@@ -597,7 +598,8 @@ def calculateDistance(heightOfCamera, heightOfTarget, pitch):
 # Link to further explanation: https://docs.google.com/presentation/d/1ediRsI-oR3-kwawFJZ34_ZTlQS2SDBLjZasjzZ-eXbQ/pub?start=false&loop=false&slide=id.g12c083cffa_0_298
 def calculateYaw(pixelX, centerX, hFocalLength):
     yaw = math.degrees(math.atan((pixelX - centerX) / hFocalLength))
-    return round(yaw)
+    return round(yaw * 2) / 2
+    #return round(yaw)
 
 
 # Link to further explanation: https://docs.google.com/presentation/d/1ediRsI-oR3-kwawFJZ34_ZTlQS2SDBLjZasjzZ-eXbQ/pub?start=false&loop=false&slide=id.g12c083cffa_0_298
@@ -784,9 +786,9 @@ if __name__ == "__main__":
         timestamp, img = cap.read()
 
         #Uncomment if camera is mounted upside down
-        frame = flipImage(img)
+        #frame = flipImage(img)
         #Comment out if camera is mounted upside down
-        #frame = img
+        frame = img
         if timestamp == 0:
             # Send the output the error.
             streamViewer.notifyError(cap.getError());
