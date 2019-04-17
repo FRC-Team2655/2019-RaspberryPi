@@ -179,9 +179,9 @@ upper_green = np.array([110, 255, 255])
 lower_orange = np.array([0,193,92])
 upper_orange = np.array([23, 255, 255])
 
-def filter_contours(input_contours, min_area = 330.0, min_perimeter = 130, min_width = 0, max_width = 1000,
+def filter_contours(input_contours, min_area = 200.0, min_perimeter = 60, min_width = 0, max_width = 1000,
                         min_height = 0, max_height = 1000, solidity = [0, 100], max_vertex_count = 1000000.0, min_vertex_count = 0,
-                        min_ratio = 0.2, max_ratio = 0.9):
+                        min_ratio = 0, max_ratio = 0.75):
         """Filters out contours that do not meet certain criteria.
         Args:
             input_contours: Contours as a list of numpy.ndarray.
@@ -598,8 +598,8 @@ def calculateDistance(heightOfCamera, heightOfTarget, pitch):
 # Link to further explanation: https://docs.google.com/presentation/d/1ediRsI-oR3-kwawFJZ34_ZTlQS2SDBLjZasjzZ-eXbQ/pub?start=false&loop=false&slide=id.g12c083cffa_0_298
 def calculateYaw(pixelX, centerX, hFocalLength):
     yaw = math.degrees(math.atan((pixelX - centerX) / hFocalLength))
-    return round(yaw * 2) / 2
-    #return round(yaw)
+    #return round(yaw * 2) / 2
+    return round(yaw)
 
 
 # Link to further explanation: https://docs.google.com/presentation/d/1ediRsI-oR3-kwawFJZ34_ZTlQS2SDBLjZasjzZ-eXbQ/pub?start=false&loop=false&slide=id.g12c083cffa_0_298
